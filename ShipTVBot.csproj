@@ -11,5 +11,11 @@
     <PackageReference Include="Discord.Net" Version="3.*" />
     <PackageReference Include="Discord.Net.Interactions" Version="3.*" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="ShipTVQuotes.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 
 </Project>

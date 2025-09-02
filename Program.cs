@@ -54,15 +54,25 @@ class Program
             .WithName("democracy")
             .WithDescription("Receive wisdom from the Ship TV.");
 
+        // 1) Register globally (works in any server the bot is in; may take a while to appear)
+        try
+        {
+            var global = await _client.Rest.CreateGlobalCommand(cmd.Build());
+            Console.WriteLine($"Upserted GLOBAL /democracy (id {global.Id})");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Global upsert error: {ex}");
+        }
+
+        // 2) Register per-guild for INSTANT testing (guild overrides global in that server)
         foreach (var guild in _client.Guilds)
         {
             try
             {
-                // Create/overwrite the command in this guild
                 var created = await guild.CreateApplicationCommandAsync(cmd.Build());
                 Console.WriteLine($"Upserted /democracy in {guild.Name} (id {created.Id})");
 
-                // List all commands now present in the guild
                 var existing = await guild.GetApplicationCommandsAsync();
                 Console.WriteLine($"Guild {guild.Name} now has {existing.Count} app command(s):");
                 foreach (var c in existing)
@@ -70,7 +80,7 @@ class Program
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error registering in {guild.Name}: {ex}");
+                Console.WriteLine($"Guild upsert error in {guild.Name}: {ex}");
             }
         }
     }
